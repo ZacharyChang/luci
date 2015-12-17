@@ -1,0 +1,3 @@
+# under /etc/config
+config 'info' 'A'
+    option 'name' 'OpenWRT'
