@@ -1,0 +1,6 @@
+config login
+	option username 'zachary'
+	option enable ''
+	option domain ''
+	option ifname ''
+	option password ''
