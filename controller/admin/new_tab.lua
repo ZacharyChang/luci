@@ -7,6 +7,7 @@ function index()
 	entry({"admin","new_tab","tab_from_cbi"},cbi("admin_myapp/cbi_tab"),"Cbi Tab",1)
 	entry({"admin","new_tab","tab_from_view"},template("admin_myapp/view_tab"),"View Tab",2)
 	entry({"admin","new_tab","action_counter"},call("counter"),_("Click here"),3).leaf=true
+	entry({"admin","new_tab","reboot"},cbi("admin_myapp/reboot"),_("Reboot"),4)
 end
 
 function counter()
