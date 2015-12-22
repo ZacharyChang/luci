@@ -1,0 +1,15 @@
+<%+header%>
+<h2>Add User</h2>
+<form method="post">
+UserName:<input type="text" name="name"/>
+<input type="submit"/>
+<form>
+<%  na=luci.http.formvalue("name")
+    if na then
+		sql=require "luasql.mysql"
+		local env=sqlmysql.mysql()
+		local conn=env:connect('test','root','5238222','127.0.0.1',3306)
+		str=string.format([[insert into user(username) values ("%s");]],na)
+		rse=assert(conn:execute(str))
+	end
+<%+footer%>
