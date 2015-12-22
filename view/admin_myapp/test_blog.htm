@@ -11,5 +11,8 @@ UserName:<input type="text" name="name"/>
 		local conn=env:connect('test','root','5238222','127.0.0.1',3306)
 		str=string.format([[insert into user(username) values ("%s");]],na)
 		rse=assert(conn:execute(str))
+		conn:close()
+		env:close()
 	end
+%>
 <%+footer%>
