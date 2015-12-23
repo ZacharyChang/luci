@@ -1,0 +1,64 @@
+<%+header%>
+<div class="container">
+	<form method="post" >
+		<div class="cbi-map">
+			<h2><%:Blog List%></h2>
+			<div class="cbi-map-descr">Show the list of blogs.</div>
+			<fieldset class="cbi-section">
+				<div class="cbi-section-node">
+					<table class="cbi-section-table">
+						<tbody>
+							<tr class="cbi-section-table-titles">
+								<th class="cbi-section-table-cell">ID</th>
+								<th class="cbi-section-table-cell">Title</th>
+								<th class="cbi-section-table-cell">Date</th>
+								<th class="cbi-section-table-cell">update</th>
+								<th class="cbi-section-table-cell">delete</th>
+							</tr>
+							<%	
+								local sql=require "luasql.mysql"
+								local env=sql.mysql()
+								local conn=env:connect('test','root','5238222','127.0.0.1',3306)
+								local str=string.format([[select * from blog;]])
+								local cursor,errorInfo=assert(conn:execute(str))
+								local row=cursor:fetch({},"a")
+								while row do
+							%>
+							<tr class="cbi-section-table-row cbi-rowstyle-1">
+								<td class="cbi-value-field"><%=row.id%></td>
+								<td class="cbi-value-field"><%=row.title%></td>
+								<td class="cbi-value-field"><%=row.date%></td>
+								<td class="cbi-value-field">
+									<a href="<%=row.id%>"><input class="cbi-button cbi-input-reload" type="submit" value="update"></a>
+								</td>
+								<td class="cbi-value-field">
+									<input class="cbi-button cbi-input-remove" type="submit" value="delete">
+								</td>
+							</tr>
+							<%
+									row=cursor:fetch(row,"a")
+								end
+								cursor:close()
+								conn:close()
+								env:close()
+							%>
+							<!--
+							<tr class="cbi-section-table-row cbi-rowstyle-1">
+								<td class="cbi-value-field">1</td>
+								<td class="cbi-value-field">Test</td>
+								<td class="cbi-value-field">...</td>
+								<td class="cbi-value-field">
+									<input class="cbi-button cbi-input-reload" type="submit" value="update">
+								</td>
+								<td class="cbi-value-field">
+									<input class="cbi-button cbi-input-remove" type="submit" value="delete">
+								</td>
+							</tr>
+							-->
+						</tbody>
+					</table>
+				</div>
+			</fieldset>
+		</div>
+	</form>
+<%+footer%>

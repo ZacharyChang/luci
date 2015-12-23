@@ -13,6 +13,7 @@ end
 
 function index()
 	entry({"admin","my_blog"},firstchild(),"Blog",30).dependent=false
-	entry({"admin","my_blog","publish_blog"},template("admin_myapp/add_blog"),"Publish Blog",1)
-	entry({"admin","my_blog","test_blog"},template("admin_myapp/test_blog"),"Test",2)
+	entry({"admin","my_blog","publish_blog"},template("admin_myapp/add_blog"),_("Publish Blog"),1)
+	entry({"admin","my_blog","test_blog"},template("admin_myapp/test_blog"),_("Test"),2)
+	entry({"admin","my_blog","show_blog"},template("admin_myapp/list_blog"),_("Show Blog"),3)
 end
