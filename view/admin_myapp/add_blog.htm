@@ -11,8 +11,8 @@
 	local content=luci.http.formvalue("content")
     if title then
 		if title~="" then
-		sql=require "luasql.mysql"
-		local env=sqlmysql.mysql()
+		local sql=require "luasql.mysql"
+		local env=sql.mysql()
 		local conn=env:connect('test','root','5238222','127.0.0.1',3306)
 		str=string.format([[insert into blog(title,content) values ("%s","%s");]],title,content)
 		rse=assert(conn:execute(str))
