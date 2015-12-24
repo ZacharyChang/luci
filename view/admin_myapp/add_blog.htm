@@ -1,12 +1,37 @@
 <%+header%>
 <script src="\tinymce\tinymce.min.js"></script>
-<script>tinymce.init({ selector:'textarea' });</script>
-<h2><%:My Blog%></h2>
-<form method="post">
-<%:Title%>:<input type="text" name="title"/>
-<textarea name="content"></textarea>
-<input type="submit"/>
-</form>
+<script>tinymce.init({ 
+	selector:'textarea',
+	height:300,
+	language:"zh_CN",
+	plugins: [
+    'advlist autolink lists link image charmap print preview anchor',
+    'searchreplace visualblocks code fullscreen',
+    'insertdatetime media table contextmenu paste code'
+  ],
+  toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image'
+});</script>
+<div class="container">
+	<form method="post">
+		<div class="cbi-map">
+			<h2>Add a blog</h2>
+			<fieldset class="cbi-section">
+				<div class="cbi-section-node">
+					<div class="cbi-value">
+						<input type="text" style="width:100%" name="title" placeholder="Please input the title here">
+					</div>
+					<div class="cbi-value cbi-value-last">
+						<textarea name="content"></textarea>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		<div class="cbi-page-actions">
+			<input class="cbi-button cbi-button-save" type="submit">
+			<input class="cbi-button cbi-button-reset" type="reset">
+		</div>
+	</form>
+</div>
 <%
 	function encode(str)
 		str=string.gsub(str,"'", "''")
@@ -28,15 +53,15 @@
 		local sql=require "luasql.mysql"
 		local env=sql.mysql()
 		local conn=env:connect('test','root','5238222','127.0.0.1',3306)
-		str=string.format([[insert into blog(title,content) values ("%s","%s");]],title,encode(tostring(content))
-		print(str)
+		str=string.format([[insert into blog(title,content) values ("%s","%s");]],title,encode(tostring(content)))
 		res=assert(conn:execute(str))
 		conn:close()
 		env:close()
 		else
 %>
 <script>alert("标题不为空！");</script>
-<% 		
+<%
+		end
 	end
  %>
 <%+footer%>
