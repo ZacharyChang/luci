@@ -12,6 +12,7 @@
 								<th class="cbi-section-table-cell">ID</th>
 								<th class="cbi-section-table-cell">Title</th>
 								<th class="cbi-section-table-cell">Date</th>
+								<th class="cbi-section-table-cell">view</th>
 								<th class="cbi-section-table-cell">update</th>
 								<th class="cbi-section-table-cell">delete</th>
 							</tr>
@@ -29,7 +30,10 @@
 								<td class="cbi-value-field"><%=row.title%></td>
 								<td class="cbi-value-field"><%=row.date%></td>
 								<td class="cbi-value-field">
-									<a href="<%=row.id%>"><input class="cbi-button cbi-input-reload" type="submit" value="update"></a>
+									<a href="<%=controller%>/admin/my_blog/view_blog?view_id=<%=row.id%>"><input class="cbi-button cbi-input-find" type="button" value="view"></a>
+								</td>
+								<td class="cbi-value-field">
+									<a href="<%=row.id%>"><input class="cbi-button cbi-input-edit" type="submit" value="update"></a>
 								</td>
 								<td class="cbi-value-field">
 									<input class="cbi-button cbi-input-remove" type="submit" value="delete">
@@ -42,19 +46,7 @@
 								conn:close()
 								env:close()
 							%>
-							<!--
-							<tr class="cbi-section-table-row cbi-rowstyle-1">
-								<td class="cbi-value-field">1</td>
-								<td class="cbi-value-field">Test</td>
-								<td class="cbi-value-field">...</td>
-								<td class="cbi-value-field">
-									<input class="cbi-button cbi-input-reload" type="submit" value="update">
-								</td>
-								<td class="cbi-value-field">
-									<input class="cbi-button cbi-input-remove" type="submit" value="delete">
-								</td>
-							</tr>
-							-->
+							
 						</tbody>
 					</table>
 				</div>
