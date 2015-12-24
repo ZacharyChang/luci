@@ -1,0 +1,49 @@
+<%+header%>
+<div class="container">
+	<h2>View Blog</h2>
+	<%
+		function decode(str)
+			str=string.gsub(str,"''", "'")
+			str=string.gsub(str,"&quot;", "\"")
+			str=string.gsub(str,"&lt;", "<")
+			str=string.gsub(str,"&gt;", ">")
+			str=string.gsub(str,"<br>", "\n")
+			str=string.gsub(str,"&ldquo;", "¡°")
+			str=string.gsub(str,"&rdquo;", "¡±")
+		return str
+	end
+	%>
+	<%	
+		local id=luci.http.formvalue("view_id")
+		local sql=require "luasql.mysql"
+		local env=sql.mysql()
+		local conn=env:connect('test','root','5238222','127.0.0.1',3306)
+		local str=string.format([[select * from blog where id=%s;]],id)
+		local cursor,errorInfo=assert(conn:execute(str))
+		local row=cursor:fetch({},"a")
+		if row then
+	%>
+	<fieldset class="cbi-section">
+		<table width="100% cellspacing="10">
+			<tbody>
+				<tr>
+					<td width="33%">Title</td>
+					<td><%=row.title%></td>
+				</tr>
+				<tr>
+					<td width="33%">Date</td>
+					<td><%=row.date%></td>
+				</tr>
+			</tbody>
+		</table>
+	</fieldset>
+	<%=decode(tostring(row.content))%>
+	<%	else	%>
+	<script>alert("Data error!Please check the id.")</script>
+	<%	end
+		cursor:close()
+		conn:close()
+		env:close()
+	%>
+</div>
+<%+footer%>

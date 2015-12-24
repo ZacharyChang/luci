@@ -7,21 +7,36 @@
 <textarea name="content"></textarea>
 <input type="submit"/>
 </form>
-<%  local title=luci.http.formvalue("title")
+<%
+	function encode(str)
+		str=string.gsub(str,"'", "''")
+		str=string.gsub(str,"\"", "&quot;")
+		str=string.gsub(str,"<", "&lt;")
+		str=string.gsub(str,">", "&gt;")
+		str=string.gsub(str,"\n", "<br>")
+		str=string.gsub(str,"“", "&ldquo;")
+		str=string.gsub(str,"”", "&rdquo;")
+		return str
+	end
+%>
+<%  
+	-- 这里返回的值不是string类型，不能直接用string.gsub()
+	local title=luci.http.formvalue("title")
 	local content=luci.http.formvalue("content")
     if title then
 		if title~="" then
 		local sql=require "luasql.mysql"
 		local env=sql.mysql()
 		local conn=env:connect('test','root','5238222','127.0.0.1',3306)
-		str=string.format([[insert into blog(title,content) values ("%s","%s");]],title,content)
-		rse=assert(conn:execute(str))
+		str=string.format([[insert into blog(title,content) values ("%s","%s");]],title,encode(tostring(content))
+		print(str)
+		res=assert(conn:execute(str))
 		conn:close()
 		env:close()
 		else
 %>
 <script>alert("标题不为空！");</script>
-<% 		end
+<% 		
 	end
  %>
 <%+footer%>
