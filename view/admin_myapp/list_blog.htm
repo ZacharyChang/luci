@@ -33,10 +33,10 @@
 									<a href="<%=controller%>/admin/my_blog/view_blog?view_id=<%=row.id%>"><input class="cbi-button cbi-input-find" type="button" value="view"></a>
 								</td>
 								<td class="cbi-value-field">
-									<a href="<%=row.id%>"><input class="cbi-button cbi-input-edit" type="submit" value="update"></a>
+									<a href="<%=controller%>/admin/my_blog/update_blog?update_id=<%=row.id%>"><input class="cbi-button cbi-input-edit" type="button" value="update"></a>
 								</td>
 								<td class="cbi-value-field">
-									<input class="cbi-button cbi-input-remove" type="submit" value="delete">
+									<a href="<%=controller%>/admin/my_blog/remove_blog?remove_id=<%=row.id%>" onclick="return confirm('确认删除？')"><input class="cbi-button cbi-input-remove" type="button" value="delete"></a>
 								</td>
 							</tr>
 							<%

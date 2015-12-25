@@ -10,8 +10,8 @@
 			str=string.gsub(str,"<br>", "\n")
 			str=string.gsub(str,"&ldquo;", "¡°")
 			str=string.gsub(str,"&rdquo;", "¡±")
-		return str
-	end
+			return str
+		end
 	%>
 	<%	
 		local id=luci.http.formvalue("view_id")

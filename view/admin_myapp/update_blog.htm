@@ -1,0 +1,96 @@
+<%+header%>
+<script src="\tinymce\tinymce.min.js"></script>
+<script>tinymce.init({ 
+	selector:'textarea',
+	height:300,
+	language:"zh_CN",
+	plugins: [
+    'advlist autolink lists link image charmap print preview anchor',
+    'searchreplace visualblocks code fullscreen',
+    'insertdatetime media table contextmenu paste code'
+  ],
+  toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image'
+});</script>
+<div class="container">
+	<form method="post">
+		<div class="cbi-map">
+			<h2>Update the blog</h2>
+			<fieldset class="cbi-section">
+				<div class="cbi-section-node">
+					<%
+						function encode(str)
+							str=string.gsub(str,"'", "''")
+							str=string.gsub(str,"\"", "&quot;")
+							str=string.gsub(str,"<", "&lt;")
+							str=string.gsub(str,">", "&gt;")
+							str=string.gsub(str,"\n", "<br>")
+							str=string.gsub(str,"“", "&ldquo;")
+							str=string.gsub(str,"”", "&rdquo;")
+							return str
+						end
+					
+						function decode(str)
+							str=string.gsub(str,"''", "'")
+							str=string.gsub(str,"&quot;", "\"")
+							str=string.gsub(str,"&lt;", "<")
+							str=string.gsub(str,"&gt;", ">")
+							str=string.gsub(str,"<br>", "\n")
+							str=string.gsub(str,"&ldquo;", "“")
+							str=string.gsub(str,"&rdquo;", "”")
+							return str
+						end
+					%>
+					<%
+						id=luci.http.formvalue("update_id")
+						local sql=require "luasql.mysql"
+						local env=sql.mysql()
+						local conn=env:connect('test','root','5238222','127.0.0.1',3306)
+						local sqlstr=string.format([[select * from blog where id=%s;]],id)
+						local cursor,errorInfo=assert(conn:execute(sqlstr))
+						local row=cursor:fetch({},"a")
+						if row then
+					%>
+					<div class="cbi-value">
+						<input type="text" style="width:100%" name="update_title" value="<%=row.title%>">
+					</div>
+					<div class="cbi-value cbi-value-last">
+						<textarea name="update_content"><%=decode(tostring(row.content))%></textarea>
+					</div>
+					<%	else	%>
+						<script>alert("Data error!Please check the id.")</script>
+					<%	end
+						cursor:close()
+						conn:close()
+						env:close()
+					%>
+				</div>
+			</fieldset>
+		</div>
+		<div class="cbi-page-actions">
+			<input class="cbi-button cbi-button-save" type="submit">
+			<input class="cbi-button cbi-button-reset" type="reset">
+		</div>
+		<%  
+			local updateTitle=luci.http.formvalue("update_title")
+			local updateContent=luci.http.formvalue("update_content")
+			if updateTitle then
+				if updateTitle~="" then
+				local sql=require "luasql.mysql"
+				local env=sql.mysql()
+				local conn=env:connect('test','root','5238222','127.0.0.1',3306)
+				local sqlstr2=string.format([[update blog set title="%s",content="%s" where id=%s;]],updateTitle,encode(tostring(updateContent)),id)
+				local res=assert(conn:execute(sqlstr2))
+				conn:close()
+				env:close()
+				else
+		%>
+		<script>alert("标题不为空！");</script>
+		<%
+				end
+			end
+		%>
+	</form>
+</div>
+
+
+<%+footer%>

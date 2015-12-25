@@ -6,10 +6,38 @@ function index()
 	entry({"admin","my_blog","test_blog"},template("admin_myapp/test_blog"),_("Test"),2)
 	entry({"admin","my_blog","show_blog"},template("admin_myapp/list_blog"),_("Show Blog"),3)
 	entry({"admin","my_blog","view_blog"},call("blog_view"),_("View Blog"),4)
+	entry({"admin","my_blog","update_blog"},call("blog_update"),_("Update Blog"),5)
+	entry({"admin","my_blog","remove_blog"},call("blog_remove"),_("Remove Blog"),6)
 end
 
 function blog_view()
 	local viewId=luci.http.formvalue("view_id")
-	luci.template.render("admin_myapp/view_blog",{view_id=view_id})
+	if viewId then
+		luci.template.render("admin_myapp/view_blog")
+	else
+		luci.template.render("admin_myapp/list_blog")
+	end
 end
 
+function blog_update()
+	local updateId=luci.http.formvalue("update_id")
+	if updateId then
+		luci.template.render("admin_myapp/update_blog")
+	else
+		luci.template.render("admin_myapp/list_blog")
+	end
+end
+
+function blog_remove()
+	local removeId=luci.http.formvalue("remove_id")
+	if removeId then
+		local sql=require "luasql.mysql"
+		local env=sql.mysql()
+		local conn=env:connect('test','root','5238222','127.0.0.1',3306)
+		local str=string.format([[delete from blog where id=%s;]],removeId)
+		local res=assert(conn:execute(str))
+		conn:close()
+		env:close()
+	end
+	luci.template.render("admin_myapp/list_blog")
+end
