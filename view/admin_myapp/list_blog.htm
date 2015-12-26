@@ -20,7 +20,7 @@
 								local sql=require "luasql.mysql"
 								local env=sql.mysql()
 								local conn=env:connect('test','root','5238222','127.0.0.1',3306)
-								local str=string.format([[select * from blog;]])
+								local str=string.format([[select * from blog order by id;]])
 								local cursor,errorInfo=assert(conn:execute(str))
 								local row=cursor:fetch({},"a")
 								while row do
