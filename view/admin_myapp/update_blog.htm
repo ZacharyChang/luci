@@ -71,13 +71,16 @@
 			local updateContent=luci.http.formvalue("update_content")
 			if updateTitle then
 				if updateTitle~="" then
-				local sql=require "luasql.mysql"
-				local env=sql.mysql()
-				local conn=env:connect('test','root','5238222','127.0.0.1',3306)
-				local sqlstr2=string.format([[update blog set title="%s",content="%s" where id=%s;]],updateTitle,encode(tostring(updateContent)),id)
-				local res=assert(conn:execute(sqlstr2))
-				conn:close()
-				env:close()
+					local sql=require "luasql.mysql"
+					local env=sql.mysql()
+					local conn=env:connect('test','root','5238222','127.0.0.1',3306)
+					local sqlstr2=string.format([[update blog set title="%s",content="%s" where id=%s;]],updateTitle,encode(tostring(updateContent)),id)
+					local res=assert(conn:execute(sqlstr2))
+					conn:close()
+					env:close()
+					if res then
+						luci.template.render("admin_myapp/list_blog")
+					end
 				else
 		%>
 		<script>alert("标题不为空！");</script>
@@ -87,6 +90,5 @@
 		%>
 	</form>
 </div>
-
 
 <%+footer%>
