@@ -36,7 +36,6 @@ function index()
 
 	entry({"admin", "system", "reboot"}, call("action_reboot"), _("Reboot"), 90)
 
-	entry({"admin","system","mypage"},template("myPage"),_("MyPage"),100)
 end
 
 function action_clock_status()
